@@ -128,7 +128,6 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
 @router.get("/", response_model=list[Access])
 async def get_acces(acces: Access = Depends(current_user)):
-    print(acces)
     acces = acces_schema(db_client.acceces.find())
     return acces
 
