@@ -10,7 +10,7 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_DURATION = 1
 SECRET = "971fcdf18808f8e5970bd726ba7a5829d330061089b313bd39f8534a02bb3c77"
 
-router = APIRouter(prefix="/loginDB", tags=["loginDB"], responses={404: {"message":"Error"}})
+router = APIRouter(prefix="/loginDB2", tags=["loginDB2"], responses={404: {"message":"Error"}})
 
 oauth2 = OAuth2PasswordBearer(tokenUrl= "loginDB")
 
@@ -42,7 +42,7 @@ users_db = {
         "edad": 26,
         "correo": "pelotafull@gmail.com",
         "disabled": False,
-        "password": "$2a$12$XE4bQNrSJn.tVFAStF0xnue4uSp0DEhckKdCZr10pJVWvTR3njczS",
+        "password": "$2a$12$Zu0KYyFwxUTgH1oEAfFIqu9Y9hyV3Oi0gQuIAIMzwHSWxYx8VmFgW",
     },
     "majo": {
         "id": 2,
@@ -84,7 +84,7 @@ async def current_user(user: UserDB = Depends(auth_user)):
     return user
 
 
-@router.post("")
+@router.post("/")
 async def login(form: OAuth2PasswordRequestForm = Depends()):
     user_db = users_db.get(form.username)
     if not user_db:

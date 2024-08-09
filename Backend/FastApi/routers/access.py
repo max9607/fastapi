@@ -13,17 +13,20 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt, JWTError
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
+import logging
 
-
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_DURATION = 30
 SECRET = "971fcdf18808f8e5970bd726ba7a5829d330061089b313bd39f8534a02bb3c77"
 
 router = APIRouter(prefix="/access", tags=["access"], responses={status.HTTP_404_NOT_FOUND: {"message":"Error"}})
 
-oauth2 = OAuth2PasswordBearer(tokenUrl= "access")
+oauth2 = OAuth2PasswordBearer(tokenUrl="access/login")
 
-crypt = CryptContext(schemes=["bcrypt"])
+
+crypt = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def search_user(correo:str):
@@ -45,32 +48,23 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return crypt.verify(plain_password, hashed_password)
 
 async def auth_user(token: str = Depends(oauth2)):
-    exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Not authorized",
-        headers={"WWW-Authenticate": "Bearer"}
-    )
-    try:
-        payload = jwt.decode(token, SECRET, algorithms=[ALGORITHM])
-        correo = payload.get("sub")
-        if correo is None:
-            raise exception
-    except JWTError:
+  exception = HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="not authoriazed",headers={"auth":"bearer"})
+  try:
+    username = jwt.decode(token, SECRET, algorithms=ALGORITHM).get("sub")
+    if username is None:
         raise exception
     
-    user = search_acces(correo)
-    if user is None:
+  except JWTError:
         raise exception
-    
-    return user
+  
+  return search_user(username)
 
-async def current_user(acces: Access = Depends(auth_user)):
-    print(acces)
-    if acces.disabled:
+async def get_current_user(acces: Access = Depends(auth_user)):
+    if acces['disabled']:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Usuario inactivo")
-
+            detail="Usuario inactivo"
+        )
     return acces
 
 
@@ -127,8 +121,5 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get("/", response_model=list[Access])
-async def get_acces(acces: Access = Depends(current_user)):
-    acces = acces_schema(db_client.acceces.find())
-    return acces
-
-    
+async def me(current_user:Access = Depends(get_current_user)):
+ return acces_schema(db_client.acceces.find())  
