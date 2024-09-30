@@ -8,10 +8,11 @@ app = FastAPI()
 
 #routers
 #app.include_router(products.router)
-app.include_router(users.router)
+
 #app.include_router(basic_auth_users.router)
 #app.include_router(jwt_auth_users.router)
 #app.include_router(usersdb.router)
+app.include_router(usersdb.router)
 app.include_router(roles.router)
 app.include_router(access.router)
 #app.include_router(jwt_auth_usersDB.router)

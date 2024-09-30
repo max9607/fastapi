@@ -1,9 +1,11 @@
 from typing import Union
-from fastapi import APIRouter, HTTPException,status
+from fastapi import APIRouter, HTTPException,status,Depends
 from db.models.user import User
 from db.client import db_client
 from db.schemas.user import user_schema, users_schema
 from bson import ObjectId
+from .access import get_current_user, Access
+
 
 router = APIRouter(prefix="/userDB", tags=["userDB"], responses={status.HTTP_404_NOT_FOUND: {"message":"Error"}})
 
@@ -15,11 +17,11 @@ router = APIRouter(prefix="/userDB", tags=["userDB"], responses={status.HTTP_404
 
 
 @router.get("/",response_model=list[User])
-async def users():
+async def users(current_user:Access=Depends(get_current_user)):
     return users_schema(db_client.users.find())
 
 @router.get("/{id}")
-async def userID(id: str):
+async def userID(id: str,current_user:Access=Depends(get_current_user)):
     return search_user("_id",ObjectId(id))
     
 def search_user(field:str, key):
@@ -31,7 +33,7 @@ def search_user(field:str, key):
     
 #post user
 @router.post("/",response_model=User,status_code=201)
-async def user(user : User):
+async def user(user : User,current_user:Access=Depends(get_current_user)):
     if type(search_user("correo", user.correo)) == User:
      raise HTTPException(status.HTTP_404_NOT_FOUND, detail="Usuario Existente")
     user_dict = dict(user)
@@ -45,7 +47,7 @@ async def user(user : User):
 
 #put user 
 @router.put("/", response_model= User)
-async def user(user: User):
+async def user(user: User,current_user:Access=Depends(get_current_user)):
     user_dict = dict(user)
     del user_dict["id"]
     try:
@@ -58,7 +60,7 @@ async def user(user: User):
        
 #delete user       
 @router.delete("/{id}", status_code=status.HTTP_200_OK)
-async def userID(id: str):
+async def userID(id: str,current_user:Access=Depends(get_current_user)):
     found = db_client.users.find_one_and_delete({"_id":ObjectId(id)})
     if not found:
      return {"Error":"No encontrado"}
