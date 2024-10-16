@@ -21,3 +21,27 @@ app.include_router(access.router)
 #iniciar mongodb :  cmd mongod
 #iniciar proyecto :  fastapi dev main.py
 
+#iniciar mongodb :  cmd mongod
+#iniciar proyecto :  fastapi dev main.py
+#iniciar mongodb :  cmd mongod
+#iniciar proyecto :  fastapi dev main.py - uvicorn main:app --reload
+#instalar antes para correr el proyecto 
+#pip install fastapi - pip install uvicorn
+#verificar si esta instalado 
+#pip show uvicorn
+
+#agregar el path en variable de entorno de windows y ejecutar el entorno virtual de python 
+#C:\Users\Anthony\source\repos\FastApiWithSql\Python\myenv\Scripts\Activate
+
+#en caso de que no se pueda añadir a las variables de entorno
+#C:\Users\Anthony\source\repos\FastApiWithSql\Python\myenv\Scripts\uvicorn.exe main:app --reload
+
+#crear entorno virtual
+#python -m venv C:\Users\Anthony\source\repos\FastApiSql\FastApiWithSql\myenv
+#C:\Users\Anthony\source\repos\FastApi\python
+
+#intstalar
+#pip install "fastapi[standard]"
+#pip install bson
+#pip install python-jose[cryptography]
+#pip install passlib
