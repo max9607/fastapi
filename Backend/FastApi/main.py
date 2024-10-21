@@ -1,6 +1,6 @@
 from typing import Union
 from fastapi import FastAPI
-from routers import products,users,basic_auth_users,jwt_auth_users,usersdb,roles,access,jwt_auth_usersDB
+from routers import products,users,basic_auth_users,jwt_auth_users,usersdb,roles,access,jwt_auth_usersDB,task
 
 app = FastAPI()
 
@@ -15,6 +15,7 @@ app = FastAPI()
 app.include_router(usersdb.router)
 app.include_router(roles.router)
 app.include_router(access.router)
+app.include_router(task.router)
 #app.include_router(jwt_auth_usersDB.router)
 
 
