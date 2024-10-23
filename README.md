@@ -22,12 +22,12 @@ Este es un proyecto de gestión de tareas implementado con **FastAPI** y **Mongo
 ### 1. Clonar el repositorio
 https://github.com/max9607/fastapi.git
 
-###2. activar entorno virtual
+### 2. activar entorno virtual
 Python\myenv\Scripts\activate.bat
 
-###3. Instalar las dependencias
+### 3. Instalar las dependencias
 pip install -r requirements.txt
 
-###4. Ejecutar Aplicacion 
+### 4. Ejecutar Aplicacion 
 uvicorn main:app --reload
 
