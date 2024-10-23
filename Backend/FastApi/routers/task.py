@@ -16,6 +16,12 @@ router = APIRouter(prefix="/task", tags=["task"], responses={status.HTTP_404_NOT
 async def tarea():
     return tasks_schema(db_client.task.find())
 
+
+@router.get("/{id}", response_model=Task,status_code=status.HTTP_200_OK)
+async def tareaid(id:str):
+    return search_task("_id", ObjectId(id))
+
+
 def search_task(field:str, key):
     try:
         role= db_client.task.find_one({field:key})
