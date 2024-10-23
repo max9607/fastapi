@@ -40,7 +40,7 @@ async def role(rol: Role,current_user:Access=Depends(get_current_user)):
     try:
         db_client.roles.find_one_and_replace({"_id":ObjectId(rol.id)},rol_dict)
     except:
-        return{"Error":"Rol Actualizado"}
+        return{"Error":"Rol no encontrado"}
     return search_role("_id",ObjectId(rol.id))
 
 @router.delete("/", status_code=status.HTTP_200_OK)

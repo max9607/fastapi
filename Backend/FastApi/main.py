@@ -46,3 +46,6 @@ app.include_router(task.router)
 #pip install bson
 #pip install python-jose[cryptography]
 #pip install passlib
+
+#nos ahorrara tiempo he instalara todas las librerias usadas
+#pip install -r requirements.txt
