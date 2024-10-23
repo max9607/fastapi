@@ -18,9 +18,16 @@ Este es un proyecto de gestión de tareas implementado con **FastAPI** y **Mongo
 
 ## Requisitos
 
-A continuación, se detalla cómo configurar y ejecutar el proyecto en tu entorno local.
 
 ### 1. Clonar el repositorio
+https://github.com/max9607/fastapi.git
 
-```
-[git clone https://github.com/tu-usuario/tu-repo.git](https://github.com/max9607/fastapi.git)
+###2. activar entorno virtual
+Python\myenv\Scripts\activate.bat
+
+###3. Instalar las dependencias
+pip install -r requirements.txt
+
+###4. Ejecutar Aplicacion 
+uvicorn main:app --reload
+
